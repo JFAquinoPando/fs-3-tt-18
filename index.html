@@ -6,13 +6,44 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="container mx-auto bg-blue-800 text-white">
-    <h1>Hola</h1>
-    <h2>Otro título</h2>
-    <h3>Otro más</h3>
-    <h4>Test 4</h4>
-    <h5>Título 5</h5>
-    <h6>🍉</h6>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora natus officia iste porro nesciunt cupiditate dolor, modi consequuntur optio dolore beatae inventore odio aspernatur, accusantium dolores est? Minus, vel sint.</p>
+<body class="container mx-auto bg-blue-800 text-white grid place-items-center">
+    <section class="h-screen max-w-[800px] w-full bg-gray-900">
+        <form action="https://rickandmortyapi.com/api/character/" method="get" class="bg-yellow-600 p-6 text-center">
+            <input type="number" name="identificador" placeholder="Ingresa el ID" class="text-black" value="2">
+            <button class="bg-red-800">Buscar</button>
+        </form>
+        <section id="personajes" class="grid grid-cols-3 gap-6">
+           
+        </section>
+    </section>
+    <script type="module">
+        const formulario = document.querySelector("form")
+        const input = document.querySelector("input")
+        const personajes = document.querySelector("section#personajes")
+
+        formulario.addEventListener("submit", async (evento) => {
+            evento.preventDefault()
+            //alert("Se hizo click")
+
+            const datos = await fetch(formulario.action+"/"+input.value, {
+                method: formulario.method
+            })
+
+            const resultados = await datos.json()
+
+            console.log(resultados);
+            personajes.insertAdjacentHTML("beforeend", 
+                `
+                 <article class='p-2 border'>
+                <img src="${resultados.image}" alt="" class='w-full'>
+                <h1>${resultados.name}</h1>
+                <h2>${resultados.status}</h2>
+            </article>
+                `
+            )
+            
+
+        })
+    </script>
 </body>
 </html>
